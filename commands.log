@@ -32,3 +32,6 @@ git switch report
 git merge master
 git add README.md commands.log screenshots/README.md
 git commit -m "Завершён пункт 6 и обновлено оформление отчёта"
+git log --all --date=short --pretty=format:"%h | %ad | %an | %s"
+git add README.md commands.log
+git commit -m "Финальная фиксация отчёта и истории операций"
