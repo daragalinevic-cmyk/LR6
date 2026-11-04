@@ -1,0 +1,22 @@
+git clone https://github.com/daragalinevic-cmyk/LR6.git
+cd LR6
+git config user.name "4515 Галиневич Д.С."
+git config user.email "daragalinevic@gmail.com"
+git branch -a
+git switch -c branch1 origin/branch1
+git log --oneline branch1
+git switch master
+git log --oneline master
+git diff master branch1 -- mergefile.txt
+git merge branch1
+git add mergefile.txt
+git commit -m "Объединены master и branch1: конфликт разрешён с сохранением обеих версий"
+git branch -d branch1
+git add notes.txt
+git commit -m "Добавлено описание лабораторной работы"
+git add notes.txt
+git commit -m "Дополнены сведения об изученных операциях Git"
+git add notes.txt
+git commit -m "Добавлена временная строка для демонстрации отката"
+git revert --no-edit HEAD
+git switch -c report
