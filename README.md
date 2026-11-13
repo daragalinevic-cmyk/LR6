@@ -12,25 +12,46 @@
 
 ### 1. Подготовка Git и GitHub
 
-Создала [форк](https://github.com/daragalinevic-cmyk/LR6) исходного репозитория [Kurtyanik/LR6](https://github.com/Kurtyanik/LR6).
+Создан [форк](https://github.com/daragalinevic-cmyk/LR6) исходного репозитория [Kurtyanik/LR6](https://github.com/Kurtyanik/LR6).
 
 ### 2. Клонирование репозитория
 
-Клонировала свой форк командой **git clone https://github.com/daragalinevic-cmyk/LR6.git**. В локальном репозитории настроила имя автора **4515 Галиневич Д.С.** и электронную почту. Командой **git branch -a** проверила доступные ветки и создала локальную **branch1** из **origin/branch1**.
+Форк клонирован на компьютер. Имя автора и почта настроены для локального репозитория. Ветка branch1 создана из origin/branch1.
+
+```powershell
+git clone https://github.com/daragalinevic-cmyk/LR6.git
+cd LR6
+git config user.name "4515 Галиневич Д.С."
+git branch -a
+git switch -c branch1 origin/branch1
+```
 
 ### 3. Работа с удалённым репозиторием
 
-Через GitHub добавила [student.txt](student.txt) со своим именем и группой. Файл появился в [коммите b64dffa](https://github.com/daragalinevic-cmyk/LR6/commit/b64dffa).
+Через GitHub добавлен [student.txt](student.txt) с именем студентки и номером группы. Файл появился в [коммите b64dffa](https://github.com/daragalinevic-cmyk/LR6/commit/b64dffa).
 
 ![Файл student.txt на GitHub](screenshots/04-student-file.jpg)
 
-*Рисунок 1 — Файл с данными студентки в ветке report.*
+Рисунок 1 — Файл с данными студентки в ветке report.
 
-Файл получила локально после операций с ветками и отмены коммита. Команда **git pull --no-rebase origin master** объединила историю удалённой и локальной веток **master** в [коммите ac57cda](https://github.com/daragalinevic-cmyk/LR6/commit/ac57cda). Затем **git merge master** перенесла обновления в **report**.
+Файл получен локально после операций с ветками и отмены коммита. Команда **git pull --no-rebase origin master** объединила историю удалённой и локальной веток **master** в [коммите ac57cda](https://github.com/daragalinevic-cmyk/LR6/commit/ac57cda). Затем обновления перенесены в **report**.
+
+```powershell
+git switch master
+git pull --no-rebase origin master
+git switch report
+git merge master
+```
 
 ### 4. Просмотр истории и сравнение веток
 
-Командами **git log --oneline master** и **git log --oneline branch1** просмотрела историю обеих веток. Их общий коммит — [c08a654](https://github.com/daragalinevic-cmyk/LR6/commit/c08a654). Последние коммиты перед слиянием — [921f53b](https://github.com/daragalinevic-cmyk/LR6/commit/921f53b) в **master** и [0f9f50d](https://github.com/daragalinevic-cmyk/LR6/commit/0f9f50d) в **branch1**. Сравнение **git diff master branch1 -- mergefile.txt** показало, что ветки изменили один и тот же участок файла по-разному.
+Просмотрена история обеих веток. Их общий коммит — [c08a654](https://github.com/daragalinevic-cmyk/LR6/commit/c08a654). Последние коммиты перед слиянием — [921f53b](https://github.com/daragalinevic-cmyk/LR6/commit/921f53b) в **master** и [0f9f50d](https://github.com/daragalinevic-cmyk/LR6/commit/0f9f50d) в **branch1**. Сравнение **git diff master branch1 -- mergefile.txt** показало, что ветки изменили один и тот же участок файла по-разному.
+
+```powershell
+git log --oneline master
+git log --oneline branch1
+git diff master branch1 -- mergefile.txt
+```
 
 | Ветка | Текст до слияния |
 | --- | --- |
@@ -39,7 +60,14 @@
 
 ### 5. Слияние веток и разрешение конфликта
 
-В ветке **master** выполнила **git merge branch1**. Git остановил слияние из-за конфликта в **mergefile.txt**. В конфликтующем файле Git показал оба варианта между маркерами:
+В ветке **master** запущено слияние. Git остановил его из-за конфликта в **mergefile.txt**.
+
+```powershell
+git switch master
+git merge branch1
+```
+
+В конфликтующем файле Git показал оба варианта между маркерами.
 
     <<<<<<< HEAD
     очень
@@ -52,49 +80,66 @@
     master
     >>>>>>> branch1
 
-Убрала маркеры и сохранила оба варианта в [mergefile.txt](mergefile.txt). Текст из **branch1** вынесла в блок «Дополнение из branch1». После **git add mergefile.txt** завершила слияние [коммитом 6512ba9](https://github.com/daragalinevic-cmyk/LR6/commit/6512ba9), у которого два родителя.
+Маркеры удалены, оба варианта сохранены в [mergefile.txt](mergefile.txt). Текст из **branch1** вынесен в блок «Дополнение из branch1». Слияние завершено [коммитом 6512ba9](https://github.com/daragalinevic-cmyk/LR6/commit/6512ba9), у которого два родителя.
+
+```powershell
+git add mergefile.txt
+git commit -m "Объединены master и branch1: конфликт разрешён с сохранением обеих версий"
+```
 
 ![Коммит слияния и итоговый файл](screenshots/02-merge-commit.jpg)
 
-*Рисунок 2 — Два родительских коммита и результат разрешения конфликта.*
+Рисунок 2 — Два родительских коммита и результат разрешения конфликта.
 
 ### 6. Удаление побочной ветки
 
-После слияния удалила локальную ветку командой **git branch -d branch1**. Её изменения вошли в **master**, а удалённая ветка **branch1** осталась на GitHub.
+После слияния локальная ветка удалена. Её изменения вошли в **master**, а удалённая ветка **branch1** осталась на GitHub.
+
+```powershell
+git branch -d branch1
+```
 
 ### 7. Создание последовательных коммитов
 
 | Коммит | Изменение в notes.txt |
 | --- | --- |
-| [88c82fd](https://github.com/daragalinevic-cmyk/LR6/commit/88c82fd) | Создала файл с названием лабораторной работы. |
-| [1d9c607](https://github.com/daragalinevic-cmyk/LR6/commit/1d9c607) | Добавила строку об изученных операциях Git. |
-| [06f4d21](https://github.com/daragalinevic-cmyk/LR6/commit/06f4d21) | Добавила временную строку для демонстрации отмены. |
+| [88c82fd](https://github.com/daragalinevic-cmyk/LR6/commit/88c82fd) | Создан файл с названием лабораторной работы. |
+| [1d9c607](https://github.com/daragalinevic-cmyk/LR6/commit/1d9c607) | Добавлена строка об изученных операциях Git. |
+| [06f4d21](https://github.com/daragalinevic-cmyk/LR6/commit/06f4d21) | Добавлена временная строка для демонстрации отмены. |
 
 ### 8. Отмена коммита
 
-Командой **git revert --no-edit HEAD** создала [коммит f4b2dc0](https://github.com/daragalinevic-cmyk/LR6/commit/f4b2dc0), который убрал временную строку из [notes.txt](notes.txt). В истории остались и добавление строки, и её отмена.
+Выполнена отмена последнего изменения. Создан [коммит f4b2dc0](https://github.com/daragalinevic-cmyk/LR6/commit/f4b2dc0), который убрал временную строку из [notes.txt](notes.txt). В истории остались и добавление строки, и её отмена.
+
+```powershell
+git revert --no-edit HEAD
+```
 
 ![Изменения в отменяющем коммите](screenshots/03-revert.jpg)
 
-*Рисунок 3 — Отменяющий коммит удалил одну строку.*
+Рисунок 3 — Отменяющий коммит удалил одну строку.
 
 ### 9. Создание ветки для отчёта
 
-Командой **git switch -c report** создала отдельную ветку. В ней разместила этот README, журнал команд и скриншоты. Ветки **master** и **report** отправила на GitHub.
+Для отчёта создана ветка **report**. В ней размещены README, журнал команд и скриншоты. Ветки **master** и **report** отправлены на GitHub.
+
+```powershell
+git switch -c report
+```
 
 ![Ветка report на GitHub](screenshots/01-github-report.jpg)
 
-*Рисунок 4 — Файлы отчёта в ветке report на GitHub.*
+Рисунок 4 — Файлы отчёта в ветке report на GitHub.
 
 ![История Git и список локальных веток](screenshots/05-console.png)
 
-*Рисунок 5 — История коммитов, два родителя коммита слияния, результат отмены и список локальных веток после удаления branch1.*
+Рисунок 5 — История коммитов, два родителя коммита слияния, результат отмены и список локальных веток после удаления branch1.
 
 ## Журнал команд
 
 Ниже приведён журнал команд без вывода терминала. Отдельная копия журнала находится в [commands.log](commands.log).
 
-```
+```powershell
 git clone https://github.com/daragalinevic-cmyk/LR6.git
 cd LR6
 git config user.name "4515 Галиневич Д.С."
@@ -170,4 +215,4 @@ c08a654 | 2020-11-21 | Kurtyanik | Файл создан пустым
 
 ## Вывод
 
-В ходе работы я сравнила две ветки, объединила их и вручную разрешила конфликт. На примере **notes.txt** проверила, как отменить изменение с сохранением истории, а на примере **student.txt** получила изменения с GitHub в локальный репозиторий.
+В ходе работы выполнены сравнение и слияние веток с ручным разрешением конфликта. На примере **notes.txt** показана отмена изменения с сохранением истории, а на примере **student.txt** — получение изменений с GitHub в локальный репозиторий.
